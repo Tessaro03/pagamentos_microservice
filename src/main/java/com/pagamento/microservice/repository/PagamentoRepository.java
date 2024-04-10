@@ -1,0 +1,9 @@
+package com.pagamento.microservice.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.pagamento.microservice.model.Pagamento;
+
+public interface PagamentoRepository extends JpaRepository<Pagamento, Long>{
+   
+}
