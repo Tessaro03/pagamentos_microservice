@@ -1,6 +1,9 @@
 package com.pagamento.microservice.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+import com.pagamento.microservice.dtos.PagamentoInputDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -28,35 +31,38 @@ import lombok.Setter;
 @EqualsAndHashCode(of = "id")
 public class Pagamento {
 
+    public Pagamento(PagamentoInputDTO dto) {
+        this.nome = dto.nome();
+        this.numero = dto.numero();
+        this.pedidoId = dto.pedidoId();
+        this.valor = dto.valor();
+
+        this.expiracao = LocalDateTime.now().plusMinutes(30);
+        this.status = Status.CRIADO;
+        this.formaDePagamentoId = 1l;
+
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @Positive
     private BigDecimal valor;
 
-    @NotBlank
     @Size(max=100)
     private String nome;
 
-    @NotBlank
     @Size(max=19)
     private String numero;
 
-    @NotBlank
-    @Size(max=7)
-    private String expiracao;
+    private LocalDateTime expiracao;
 
-
-    @NotNull
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @NotNull
     private Long pedidoId;
 
-    @NotNull
     private Long formaDePagamentoId;
 
 

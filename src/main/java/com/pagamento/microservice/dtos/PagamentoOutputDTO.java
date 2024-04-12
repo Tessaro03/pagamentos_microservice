@@ -1,6 +1,7 @@
 package com.pagamento.microservice.dtos;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import com.pagamento.microservice.model.Pagamento;
 import com.pagamento.microservice.model.Status;
@@ -11,7 +12,7 @@ public record PagamentoOutputDTO(
     BigDecimal valor,
     String nome,
     String numero,
-    String expiracao,
+    LocalDateTime expiracao,
     Status status,
     Long pedidoId
 
