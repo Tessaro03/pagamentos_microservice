@@ -33,7 +33,6 @@ public class Pagamento {
 
     public Pagamento(PagamentoInputDTO dto) {
         this.nome = dto.nome();
-        this.numero = dto.numero();
         this.pedidoId = dto.pedidoId();
         this.valor = dto.valor();
 
@@ -48,13 +47,11 @@ public class Pagamento {
     private Long id;
 
     @Positive
-    private BigDecimal valor;
+    private Double valor;
 
     @Size(max=100)
     private String nome;
 
-    @Size(max=19)
-    private String numero;
 
     private LocalDateTime expiracao;
 

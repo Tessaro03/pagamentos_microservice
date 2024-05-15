@@ -41,4 +41,14 @@ public class PagamentoService {
         repository.save(pagamento);
         pedido.atualizarPedido(pagamento.getPedidoId());
     }
+
+
+    public void cancelarPagamento(Long id) {
+        var pagamento = repository.pagamentoPorIdPedido(id);
+        if (pagamento.isPresent()) {
+            pagamento.get().setStatus(Status.CANCELADO);
+            repository.save(pagamento.get());
+        }
+    }
 }
+    

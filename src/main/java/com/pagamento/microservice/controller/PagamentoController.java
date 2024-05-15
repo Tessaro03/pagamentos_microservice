@@ -2,6 +2,7 @@ package com.pagamento.microservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,12 @@ public class PagamentoController {
     @PatchMapping("{id}/confirmado")
     public void confirmarPagamento(@PathVariable Long id){
         service.confirmaPagamento(id);
+        
+    }
+
+    @DeleteMapping("{id}/cancelado")
+    public void cancelarPagamento(@PathVariable Long id){
+        service.cancelarPagamento(id);
         
     }
 }
