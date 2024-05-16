@@ -29,19 +29,20 @@ public class PagamentoController {
     }
 
     @PostMapping
-    public void criar(@RequestBody @Valid PagamentoInputDTO dto){
+    public ResponseEntity criar(@RequestBody @Valid PagamentoInputDTO dto){
         service.criarPagamento(dto);
+        return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("{id}/confirmado")
-    public void confirmarPagamento(@PathVariable Long id){
-        service.confirmaPagamento(id);
+    @PatchMapping("{idPedido}/confirmado")
+    public void confirmarPagamento(@PathVariable Long idPedido){
+        service.confirmaPagamento(idPedido);
         
     }
 
-    @DeleteMapping("{id}/cancelado")
-    public void cancelarPagamento(@PathVariable Long id){
-        service.cancelarPagamento(id);
+    @DeleteMapping("{idPedido}/cancelado")
+    public void cancelarPagamento(@PathVariable Long idPedido){
+        service.cancelarPagamento(idPedido);
         
     }
 }

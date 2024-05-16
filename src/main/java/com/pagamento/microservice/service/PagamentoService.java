@@ -12,6 +12,7 @@ import com.pagamento.microservice.http.PedidoClient;
 import com.pagamento.microservice.model.Pagamento;
 import com.pagamento.microservice.model.Status;
 import com.pagamento.microservice.repository.PagamentoRepository;
+import com.pagamento.microservice.validations.ValidadorPagamentos;
 
 @Service
 public class PagamentoService {
@@ -22,8 +23,12 @@ public class PagamentoService {
     @Autowired
     private PedidoClient pedido;
 
+    @Autowired
+    private ValidadorPagamentos validador;
+
 
     public void criarPagamento(PagamentoInputDTO dto){
+        validador.validarPost(dto);
         var pagamento = new Pagamento(dto);
         repository.save(pagamento);
     }
@@ -35,16 +40,19 @@ public class PagamentoService {
         return pagamentos.stream().map(PagamentoOutputDTO::new).collect(Collectors.toList());
     }
 
-    public void confirmaPagamento(Long id){
-        var pagamento = repository.getReferenceById(id);
-        pagamento.setStatus(Status.CONFIRMADO);
-        repository.save(pagamento);
-        pedido.atualizarPedido(pagamento.getPedidoId());
+    public void confirmaPagamento(Long idPedido){
+        var pagamento = repository.pagamentoPorIdPedido(idPedido);
+        
+        if (pagamento.isPresent()) {
+            pagamento.get().setStatus(Status.CONFIRMADO);
+            repository.save(pagamento.get());
+            pedido.atualizarPedido(idPedido);
+        }
     }
 
 
-    public void cancelarPagamento(Long id) {
-        var pagamento = repository.pagamentoPorIdPedido(id);
+    public void cancelarPagamento(Long idPedido) {
+        var pagamento = repository.pagamentoPorIdPedido(idPedido);
         if (pagamento.isPresent()) {
             pagamento.get().setStatus(Status.CANCELADO);
             repository.save(pagamento.get());
