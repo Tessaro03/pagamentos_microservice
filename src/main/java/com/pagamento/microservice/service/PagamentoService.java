@@ -36,27 +36,27 @@ public class PagamentoService {
 
     public List<PagamentoOutputDTO> verPagamentos() {
         var pagamentos = repository.findAll();
-
         return pagamentos.stream().map(PagamentoOutputDTO::new).collect(Collectors.toList());
     }
 
     public void confirmaPagamento(Long idPedido){
+        validador.validarPatch(idPedido);
+
         var pagamento = repository.pagamentoPorIdPedido(idPedido);
+        pagamento.get().setStatus(Status.CONFIRMADO);
+        repository.save(pagamento.get());
+        pedido.atualizarPedido(idPedido);
         
-        if (pagamento.isPresent()) {
-            pagamento.get().setStatus(Status.CONFIRMADO);
-            repository.save(pagamento.get());
-            pedido.atualizarPedido(idPedido);
-        }
     }
 
 
     public void cancelarPagamento(Long idPedido) {
+        validador.validarDelete(idPedido);
+
         var pagamento = repository.pagamentoPorIdPedido(idPedido);
-        if (pagamento.isPresent()) {
-            pagamento.get().setStatus(Status.CANCELADO);
-            repository.save(pagamento.get());
-        }
+        pagamento.get().setStatus(Status.CANCELADO);
+        repository.save(pagamento.get());
+        
     }
 }
     
