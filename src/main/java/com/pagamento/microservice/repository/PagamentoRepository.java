@@ -12,4 +12,5 @@ public interface PagamentoRepository extends JpaRepository<Pagamento, Long>{
     @Query("SELECT p FROM Pagamento p WHERE p.pedidoId = :idPedido")
     Optional<Pagamento> pagamentoPorIdPedido(Long idPedido);
 
+    
 }
