@@ -3,12 +3,12 @@ package com.pagamento.microservice.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pagamento.microservice.dtos.PagamentoInputDTO;
 import com.pagamento.microservice.dtos.PagamentoOutputDTO;
-import com.pagamento.microservice.http.PedidoClient;
 import com.pagamento.microservice.model.Pagamento;
 import com.pagamento.microservice.model.Status;
 import com.pagamento.microservice.repository.PagamentoRepository;
@@ -21,11 +21,10 @@ public class PagamentoService {
     private PagamentoRepository repository;
 
     @Autowired
-    private PedidoClient pedido;
-
-    @Autowired
     private ValidadorPagamentos validador;
 
+    @Autowired 
+	private RabbitTemplate rabbitTemplate;
 
     public void criarPagamento(PagamentoInputDTO dto){
         validador.validarPost(dto);
@@ -41,18 +40,15 @@ public class PagamentoService {
 
     public void confirmaPagamento(Long idPedido){
         validador.validarPatch(idPedido);
-
         var pagamento = repository.pagamentoPorIdPedido(idPedido);
         pagamento.get().setStatus(Status.CONFIRMADO);
         repository.save(pagamento.get());
-        pedido.atualizarPedido(idPedido);
-        
+        rabbitTemplate.convertAndSend("pagamento.concluido", pagamento.get().getPedidoId());
     }
 
 
     public void cancelarPagamento(Long idPedido) {
         validador.validarDelete(idPedido);
-
         var pagamento = repository.pagamentoPorIdPedido(idPedido);
         pagamento.get().setStatus(Status.CANCELADO);
         repository.save(pagamento.get());

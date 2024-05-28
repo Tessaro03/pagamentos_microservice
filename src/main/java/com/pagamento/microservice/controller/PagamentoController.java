@@ -37,7 +37,7 @@ public class PagamentoController {
     @PatchMapping("{idPedido}/confirmado")
     public void confirmarPagamento(@PathVariable Long idPedido){
         service.confirmaPagamento(idPedido);
-        
+           
     }
 
     @DeleteMapping("{idPedido}/cancelado")
