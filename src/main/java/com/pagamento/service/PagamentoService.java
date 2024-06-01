@@ -43,7 +43,7 @@ public class PagamentoService {
         var pagamento = repository.pagamentoPorIdPedido(idPedido);
         pagamento.get().setStatus(Status.CONFIRMADO);
         repository.save(pagamento.get());
-        rabbitTemplate.convertAndSend("pagamento.concluido", pagamento.get().getPedidoId());
+        rabbitTemplate.convertAndSend("pagamento.ex","", pagamento.get().getPedidoId());
     }
 
 
