@@ -1,5 +1,6 @@
 package com.pagamento.amqp;
 
+import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -19,10 +20,11 @@ public class PagamentoAMQPConfiguration {
         return new RabbitAdmin(conn);
     }
 
-    @Bean
-    public Queue criaFila(){ 
-        return QueueBuilder.nonDurable("pagamento.concluido").build(); 
-    }
+
+    @Bean 
+    public FanoutExchange fanoutExchange() {     
+        return new FanoutExchange("pagamento.ex"); 
+    }  
 
     @Bean
     public Jackson2JsonMessageConverter messageConverter(){
