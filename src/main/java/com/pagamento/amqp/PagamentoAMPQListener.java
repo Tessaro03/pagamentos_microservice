@@ -18,9 +18,9 @@ public class PagamentoAMPQListener {
         service.criarPagamento(pagamento);
     }
 
-    @RabbitListener(queues = "pedido.cancelado")
-    public void pedidoCancelado(Long idPedido){
-        service.cancelarPagamento(idPedido);
+    @RabbitListener(queues="pedido.cancelado-pagamento")
+    public void pedidoCancelado(Long id){
+        service.cancelarPagamento(id);
     }
 
 }
