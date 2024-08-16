@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 public record PagamentoInputDTO(
 
     @NotBlank
-    String nome,
+    Long idCliente,
     Double valor,
     @NotNull
     Long pedidoId

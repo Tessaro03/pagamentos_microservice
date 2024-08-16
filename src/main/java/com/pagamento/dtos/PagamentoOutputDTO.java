@@ -8,15 +8,15 @@ import com.pagamento.model.Status;
 public record PagamentoOutputDTO(
 
     Long id,
+    Long idCliente,
     Double valor,
-    String nome,
     LocalDateTime expiracao,
     Status status,
     Long pedidoId
 
 ) {
     public PagamentoOutputDTO(Pagamento pagamento){
-        this(pagamento.getId(), pagamento.getValor(),  pagamento.getNome(),   pagamento.getExpiracao(), 
+        this(pagamento.getId(), pagamento.getIdCliente(), pagamento.getValor(), pagamento.getExpiracao(), 
            pagamento.getStatus(),  pagamento.getPedidoId());
     }
 }

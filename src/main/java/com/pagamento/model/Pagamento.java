@@ -29,7 +29,7 @@ import lombok.Setter;
 public class Pagamento {
 
     public Pagamento(PagamentoInputDTO dto) {
-        this.nome = dto.nome();
+        this.idCliente = dto.idCliente();
         this.pedidoId = dto.pedidoId();
         this.valor = dto.valor();
 
@@ -47,7 +47,7 @@ public class Pagamento {
     private Double valor;
 
     @Size(max=100)
-    private String nome;
+    private Long idCliente;
 
 
     private LocalDateTime expiracao;
