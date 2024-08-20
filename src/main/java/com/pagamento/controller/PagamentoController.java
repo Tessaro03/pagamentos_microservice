@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pagamento.service.PagamentoService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/pagamentos")
@@ -22,22 +23,22 @@ public class PagamentoController {
 
     @GetMapping
     @Operation(summary = "Ver Pagamentos", description = "Retorna os pagamentos criado")
-    public ResponseEntity ver(){
-        return ResponseEntity.ok().body(service.verPagamentos());
+    public ResponseEntity ver(HttpServletRequest request){
+        return ResponseEntity.ok().body(service.verPagamentos(request));
     }
 
 
     @PatchMapping("{idPedido}/confirmado")
     @Operation(summary = "Confirma o pagamento", description = "Confirma o pagamento e notifica a API de Pedidos e Avaliação")
-    public void confirmarPagamento(@PathVariable Long idPedido){
-        service.confirmaPagamento(idPedido);
+    public void confirmarPagamento(@PathVariable Long idPedido, HttpServletRequest request){
+        service.confirmaPagamento(idPedido, request);
            
     }
 
     @DeleteMapping("{idPedido}/cancelado")
     @Operation(summary = "Cancela o pagamento", description = "Cancela o pagamento e notifica a API de Pedidos")
-    public void cancelarPagamento(@PathVariable Long idPedido){
-        service.cancelarPagamento(idPedido);
+    public void cancelarPagamento(@PathVariable Long idPedido, HttpServletRequest request){
+        service.cancelarPagamento(idPedido, request);
         
     }
 }
