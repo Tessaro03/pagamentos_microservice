@@ -8,6 +8,9 @@ public record PagamentoInputDTO(
 
     @NotBlank
     Long idCliente,
+    @NotBlank
+    Long idLoja,
+
     Double valor,
     @NotNull
     Long pedidoId

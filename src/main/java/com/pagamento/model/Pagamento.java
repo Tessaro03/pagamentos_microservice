@@ -30,6 +30,7 @@ public class Pagamento {
 
     public Pagamento(PagamentoInputDTO dto) {
         this.idCliente = dto.idCliente();
+        this.idLoja = dto.idLoja();
         this.pedidoId = dto.pedidoId();
         this.valor = dto.valor();
 
@@ -42,20 +43,22 @@ public class Pagamento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Positive
-    private Double valor;
-
+    private Long pedidoId;
+    
     @Size(max=100)
     private Long idCliente;
-
+ 
+    @Size(max=100)
+    private Long idLoja;
+    
+    private Double valor;
 
     private LocalDateTime expiracao;
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    private Long pedidoId;
 
     private Long formaDePagamentoId;
 
